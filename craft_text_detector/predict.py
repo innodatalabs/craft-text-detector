@@ -70,14 +70,14 @@ def get_prediction(
     t0 = time.time()
 
     # make score and link map
-    score_text = y[0, :, :, 0].cpu().data.numpy()
-    score_link = y[0, :, :, 1].cpu().data.numpy()
+    score_text = y[0, 0, :, :].cpu().data.numpy()
+    score_link = y[0, 1, :, :].cpu().data.numpy()
 
     # refine link
     if refine_net is not None:
         with torch_utils.no_grad():
             y_refiner = refine_net(y, feature)
-        score_link = y_refiner[0, :, :, 0].cpu().data.numpy()
+        score_link = y_refiner[0, 0, :, :].cpu().data.numpy()
     refinenet_time = time.time() - t0
     t0 = time.time()
 
@@ -107,7 +107,7 @@ def get_prediction(
     polys_as_ratio = []
     for poly in polys:
         polys_as_ratio.append(poly / [img_width, img_height])
-    polys_as_ratio = np.array(polys_as_ratio)
+    polys_as_ratio = np.array(polys_as_ratio, dtype=object)
 
     text_score_heatmap = image_utils.cvt2HeatmapImg(score_text)
     link_score_heatmap = image_utils.cvt2HeatmapImg(score_link)

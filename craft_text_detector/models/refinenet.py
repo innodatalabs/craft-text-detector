@@ -72,7 +72,7 @@ class RefineNet(nn.Module):
         init_weights(self.aspp4.modules())
 
     def forward(self, y, upconv4):
-        refine = torch.cat([y.permute(0, 3, 1, 2), upconv4], dim=1)
+        refine = torch.cat([y, upconv4], dim=1)
         refine = self.last_conv(refine)
 
         aspp1 = self.aspp1(refine)
@@ -82,4 +82,4 @@ class RefineNet(nn.Module):
 
         # out = torch.add([aspp1, aspp2, aspp3, aspp4], dim=1)
         out = aspp1 + aspp2 + aspp3 + aspp4
-        return out.permute(0, 2, 3, 1)  # , refine.permute(0,2,3,1)
+        return out

@@ -62,6 +62,7 @@ class CraftNet(nn.Module):
 
     def forward(self, x):
         """ Base network """
+        # x: [B, C, H, W]
         sources = self.basenet(x)
 
         """ U network """
@@ -88,7 +89,7 @@ class CraftNet(nn.Module):
 
         y = self.conv_cls(feature)
 
-        return y.permute(0, 2, 3, 1), feature
+        return y, feature
 
 
 if __name__ == "__main__":
