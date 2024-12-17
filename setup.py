@@ -1,6 +1,7 @@
 import io
 import os
 import re
+from datetime import datetime
 
 import setuptools
 
@@ -20,7 +21,9 @@ def get_version():
     current_dir = os.path.abspath(os.path.dirname(__file__))
     version_file = os.path.join(current_dir, "craft_text_detector", "__init__.py")
     with io.open(version_file, encoding="utf-8") as f:
-        return re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', f.read(), re.M).group(1)
+        version = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', f.read(), re.M).group(1)
+        build_date = datetime.now().strftime("%Y%m%d")
+        return f"{version}+criteo.{build_date}"
 
 
 setuptools.setup(
