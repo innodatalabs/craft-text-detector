@@ -1,6 +1,7 @@
 import io
 import os
 import re
+from datetime import datetime
 
 import setuptools
 
@@ -20,7 +21,9 @@ def get_version():
     current_dir = os.path.abspath(os.path.dirname(__file__))
     version_file = os.path.join(current_dir, "craft_text_detector", "__init__.py")
     with io.open(version_file, encoding="utf-8") as f:
-        return re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', f.read(), re.M).group(1)
+        version = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', f.read(), re.M).group(1)
+        build_date = datetime.now().strftime("%Y%m%d")
+        return f"{version}+criteo.{build_date}"
 
 
 setuptools.setup(
@@ -34,7 +37,7 @@ setuptools.setup(
     url="https://github.com/fcakyon/craft_text_detector",
     packages=setuptools.find_packages(exclude=["tests"]),
     install_requires=get_requirements(),
-    python_requires=">=3.7",
+    python_requires="==3.9",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: MIT License",
@@ -42,9 +45,7 @@ setuptools.setup(
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Education",
